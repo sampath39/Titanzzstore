@@ -11,27 +11,17 @@ CORS(app)
 def flipkart_search(product):
     try:
         query = quote_plus(product)
-        url = f'https://www.flipkart.com/search?q={query}'
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122.0.0.0 Safari/537.36"
-        }
+        flipkart_url = f'https://www.flipkart.com/search?q={query}'
 
-        response = requests.get(url, headers=headers)
+        # ✅ ScraperAPI configuration
+        api_key = "e6da82c6c267fe1a12f00dce7d5ee0fc"
+        proxy_url = f"http://api.scraperapi.com/?api_key={api_key}&url={flipkart_url}"
+
+        response = requests.get(proxy_url)
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        # Check if we're being blocked (login or captcha page)
-        if "Login" in response.text or soup.title is None:
-            print("⚠️ Detected bot block - returning fallback data.")
-            return [{
-                "name": "Sample Product",
-                "price": "999",
-                "url": "https://www.flipkart.com",
-                "website": "flipkart",
-                "image_url": "https://via.placeholder.com/200x200.png?text=Sample"
-            }]
-
         cards = soup.find_all("div", class_="cPHDOP col-12-12")
-        
+
         price_pattern = r"₹([\d,]*)"
         name_pattern = r'<div class="KzDlHZ">(.*?)</div>'
         link_pattern = r"href=\"([a-zA-Z0-9\/-]*)"
@@ -58,8 +48,14 @@ def flipkart_search(product):
         return details
 
     except Exception as e:
-        print("❌ Error:", e)
-        return None
+        print("❌ Error during Flipkart scrape:", e)
+        return [{
+            "name": "Error loading product",
+            "price": "0",
+            "url": "https://www.flipkart.com",
+            "website": "flipkart",
+            "image_url": "https://via.placeholder.com/200x200.png?text=Error"
+        }]
 
 @app.route('/')
 def index():
