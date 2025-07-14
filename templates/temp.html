@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Titanzz Store - Results</title>
+  <title>Titanzz Store - Search Results</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #f4f4f4;
+      background-color: #f0f0f0;
       margin: 0;
       padding: 0;
     }
 
     header {
-      background: url('/static/images/header.jpg') no-repeat center center/cover;
+      background: linear-gradient(to right, #6a0dad, #8a2be2);
       color: white;
       padding: 20px 30px;
       display: flex;
@@ -60,6 +60,11 @@
       text-align: center;
     }
 
+    h1 {
+      color: #444;
+      margin-bottom: 20px;
+    }
+
     .products {
       display: flex;
       flex-wrap: wrap;
@@ -71,25 +76,35 @@
       background-color: white;
       padding: 16px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      width: 250px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      width: 240px;
+      transition: transform 0.2s;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .product-card:hover {
+      transform: scale(1.03);
     }
 
     .product-card img {
       width: 100%;
-      height: 200px;
+      height: 180px;
       object-fit: contain;
     }
 
     .product-card h3 {
-      color: #444;
       font-size: 16px;
+      color: #222;
+      margin: 10px 0 5px;
+      height: 45px;
+      overflow: hidden;
     }
 
     .product-card p {
       color: crimson;
       font-weight: bold;
-      margin-top: 8px;
+      margin: 0;
     }
 
     footer {
@@ -115,11 +130,12 @@
   <header>
     <div class="brand">Titanzz Store 🎈💤⚡</div>
     <nav>
+      <a href="/">Home</a>
       <a href="#">About</a>
     </nav>
     <form action="/getSuggestions" method="post">
-      <input type="text" name="item" placeholder="Search..."/>
-      <button><i class="fas fa-search"></i></button>
+      <input type="text" name="item" placeholder="Search again..." required>
+      <button type="submit"><i class="fas fa-search"></i></button>
     </form>
   </header>
 
@@ -127,18 +143,16 @@
     <h1>Available Products</h1>
 
     <div class="products">
-      {% if items|length > 1 %}
+      {% if items %}
         {% for item in items %}
-        <a href="https://{{item.website}}.com{{item.url}}" target="_blank">
-          <div class="product-card">
-            <img src="{{item.image_url}}" alt="{{item.name}}"/>
-            <h3>{{item.name}}</h3>
-            <p>&#8377;{{item.price}}</p>
-          </div>
+        <a href="{{ item.url }}" class="product-card" target="_blank">
+          <img src="{{ item.image_url }}" alt="{{ item.name }}">
+          <h3>{{ item.name }}</h3>
+          <p>₹{{ item.price }}</p>
         </a>
         {% endfor %}
       {% else %}
-        <p>No items found</p>
+        <p>No products found. Please try another search.</p>
       {% endif %}
     </div>
   </main>
