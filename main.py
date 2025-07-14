@@ -103,4 +103,4 @@ def get_suggestion():
         return render_template('temp.html', items=items)
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=8000)
