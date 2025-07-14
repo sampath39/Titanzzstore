@@ -2,3 +2,4 @@ flask
 selenium
 pyperclip
 flask-cors
+beautifulsoup
