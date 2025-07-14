@@ -1,5 +1,5 @@
 flask
 pyperclip
 flask-cors
-re
+
 BeautifulSoup
