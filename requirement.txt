@@ -1,5 +1,6 @@
 flask
 pyperclip
 flask-cors
-
-BeautifulSoup
+requests
+beautifulsoup4
+lxml
